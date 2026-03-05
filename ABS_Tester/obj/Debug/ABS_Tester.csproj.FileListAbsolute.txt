@@ -1,0 +1,8 @@
+E:\범한\ABS_Tester\ABS_Tester\obj\Debug\ABS_Tester.csproj.AssemblyReference.cache
+E:\범한\ABS_Tester\ABS_Tester\obj\Debug\ABS_Tester.Forms.MainForm.resources
+E:\범한\ABS_Tester\ABS_Tester\obj\Debug\ABS_Tester.csproj.GenerateResource.cache
+E:\범한\ABS_Tester\ABS_Tester\obj\Debug\ABS_Tester.csproj.CoreCompileInputs.cache
+E:\범한\ABS_Tester\ABS_Tester\bin\Debug\ABS_Tester.exe
+E:\범한\ABS_Tester\ABS_Tester\bin\Debug\ABS_Tester.pdb
+E:\범한\ABS_Tester\ABS_Tester\obj\Debug\ABS_Tester.exe
+E:\범한\ABS_Tester\ABS_Tester\obj\Debug\ABS_Tester.pdb

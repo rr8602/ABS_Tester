@@ -1,0 +1,206 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\\uBC94\uD55C\\ABS_Tester\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|E:\\\uBC94\uD55C\\ABS_Tester\\abs_tester\\protocol\\seedkeyalgorithm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|solutionrelative:abs_tester\\protocol\\seedkeyalgorithm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|E:\\\uBC94\uD55C\\ABS_Tester\\abs_tester\\protocol\\ebs5protocol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|solutionrelative:abs_tester\\protocol\\ebs5protocol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|e:\\\uBC94\uD55C\\abs_tester\\abs_tester\\communication\\vrtdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|solutionrelative:abs_tester\\communication\\vrtdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|E:\\\uBC94\uD55C\\ABS_Tester\\abs_tester\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|solutionrelative:abs_tester\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|E:\\\uBC94\uD55C\\ABS_Tester\\abs_tester\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|solutionrelative:abs_tester\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|E:\\\uBC94\uD55C\\ABS_Tester\\abs_tester\\protocol\\udsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|solutionrelative:abs_tester\\protocol\\udsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|E:\\\uBC94\uD55C\\ABS_Tester\\abs_tester\\utils\\logger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|solutionrelative:abs_tester\\utils\\logger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|E:\\\uBC94\uD55C\\ABS_Tester\\abs_tester\\communication\\canmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|ABS_Tester\\ABS_Tester.csproj|solutionrelative:abs_tester\\communication\\canmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{57d563b6-44a5-47df-85be-f4199ad6b651}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:135:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SeedKeyAlgorithm.cs",
+              "DocumentMoniker": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Protocol\\SeedKeyAlgorithm.cs",
+              "RelativeDocumentMoniker": "ABS_Tester\\Protocol\\SeedKeyAlgorithm.cs",
+              "ToolTip": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Protocol\\SeedKeyAlgorithm.cs",
+              "RelativeToolTip": "ABS_Tester\\Protocol\\SeedKeyAlgorithm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T00:34:50.166Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MainForm.cs [\uB514\uC790\uC778]",
+              "DocumentMoniker": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Forms\\MainForm.cs",
+              "RelativeDocumentMoniker": "ABS_Tester\\Forms\\MainForm.cs",
+              "ToolTip": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Forms\\MainForm.cs [\uB514\uC790\uC778]",
+              "RelativeToolTip": "ABS_Tester\\Forms\\MainForm.cs [\uB514\uC790\uC778]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T00:05:25.618Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UdsService.cs",
+              "DocumentMoniker": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Protocol\\UdsService.cs",
+              "RelativeDocumentMoniker": "ABS_Tester\\Protocol\\UdsService.cs",
+              "ToolTip": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Protocol\\UdsService.cs",
+              "RelativeToolTip": "ABS_Tester\\Protocol\\UdsService.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAADwvxkAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T08:57:43.683Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EBS5Protocol.cs",
+              "DocumentMoniker": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Protocol\\EBS5Protocol.cs",
+              "RelativeDocumentMoniker": "ABS_Tester\\Protocol\\EBS5Protocol.cs",
+              "ToolTip": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Protocol\\EBS5Protocol.cs",
+              "RelativeToolTip": "ABS_Tester\\Protocol\\EBS5Protocol.cs",
+              "ViewState": "AgIAAKEBAAAAAAAAAAAAAPwBAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T08:43:37.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Logger.cs",
+              "DocumentMoniker": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Utils\\Logger.cs",
+              "RelativeDocumentMoniker": "ABS_Tester\\Utils\\Logger.cs",
+              "ToolTip": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Utils\\Logger.cs",
+              "RelativeToolTip": "ABS_Tester\\Utils\\Logger.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAADwv0wAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T08:43:27.868Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Forms\\MainForm.cs",
+              "RelativeDocumentMoniker": "ABS_Tester\\Forms\\MainForm.cs",
+              "ToolTip": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Forms\\MainForm.cs",
+              "RelativeToolTip": "ABS_Tester\\Forms\\MainForm.cs",
+              "ViewState": "AgIAAOoAAAAAAAAAAADwvwQBAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T08:43:25.774Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VrtDevice.cs",
+              "DocumentMoniker": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Communication\\VrtDevice.cs",
+              "RelativeDocumentMoniker": "ABS_Tester\\Communication\\VrtDevice.cs",
+              "ToolTip": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Communication\\VrtDevice.cs",
+              "RelativeToolTip": "ABS_Tester\\Communication\\VrtDevice.cs",
+              "ViewState": "AgIAAL8BAAAAAAAAAAAQwOMBAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T08:27:21.677Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CanMessage.cs",
+              "DocumentMoniker": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Communication\\CanMessage.cs",
+              "RelativeDocumentMoniker": "ABS_Tester\\Communication\\CanMessage.cs",
+              "ToolTip": "E:\\\uBC94\uD55C\\ABS_Tester\\ABS_Tester\\Communication\\CanMessage.cs",
+              "RelativeToolTip": "ABS_Tester\\Communication\\CanMessage.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T08:27:17.61Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
