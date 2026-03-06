@@ -1,0 +1,18 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+
+# NuGet
+packages/
+
+# Debug files
+*.pdb
+
+# OS
+Thumbs.db
+Desktop.ini

@@ -46,6 +46,9 @@ namespace ABS_Tester.Forms
             _vrtDevice.DataReceived += OnDataReceived;
             _protocol = new EBS5Protocol(_vrtDevice);
             _logger = Logger.Instance;
+
+            // Logger를 VrtDevice에 연동 (TX/RX 자동 로깅)
+            _vrtDevice.Logger = _logger;
         }
 
         private void InitializeTimers()
@@ -154,6 +157,11 @@ namespace ABS_Tester.Forms
 
                 AddLog("ECU 연결 시도...");
 
+                // 로그 파일 시작 (연결 전에 시작해서 연결 과정도 기록)
+                StartFileLogging();
+
+                _logger?.LogStep("ECU Connect (Extended Session + Security Access)");
+
                 // ECU 연결 (Diagnostic Session + Security Access)
                 if (_protocol.Connect())
                 {
@@ -162,16 +170,16 @@ namespace ABS_Tester.Forms
                     _keepAliveTimer.Start();
                     AddLog("ECU 연결 성공 (Security Access 완료)");
 
-                    // 로그 파일 시작
-                    StartFileLogging();
-
                     // ECU 정보 읽기
+                    _logger?.LogStep("Read ECU Information");
                     ReadEcuInfo();
                 }
                 else
                 {
+                    _logger?.LogError("ECU Connection Failed - Security Access Error");
                     AddLog("ECU 연결 실패 - Security Access 오류");
                     MessageBox.Show("ECU 연결에 실패했습니다.\nSecurity Access 오류", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    StopFileLogging(false, "ECU Connection Failed");
                 }
             }
             else
@@ -191,6 +199,7 @@ namespace ABS_Tester.Forms
         private void btnReadEcuInfo_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Read ECU Information");
             ReadEcuInfo();
         }
 
@@ -198,6 +207,7 @@ namespace ABS_Tester.Forms
         {
             if (!CheckConnection()) return;
 
+            _logger?.LogStep("Read DTC");
             AddLog("DTC 읽기...");
             var dtc = _protocol.ReadDtc();
             if (dtc != null)
@@ -217,6 +227,7 @@ namespace ABS_Tester.Forms
 
             if (MessageBox.Show("DTC를 삭제하시겠습니까?", "확인", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                _logger?.LogStep("Clear DTC");
                 AddLog("DTC 삭제 중...");
                 if (_protocol.ClearDtc())
                 {
@@ -225,6 +236,7 @@ namespace ABS_Tester.Forms
                 }
                 else
                 {
+                    _logger?.LogError("Clear DTC Failed");
                     AddLog("DTC 삭제 실패");
                 }
             }
@@ -234,6 +246,7 @@ namespace ABS_Tester.Forms
         {
             if (!CheckConnection()) return;
 
+            _logger?.LogStep("Read Voltage");
             AddLog("전압 읽기...");
             var voltage = _protocol.ReadVoltage();
             lblVoltageUz.Text = $"{voltage.IgnitionVoltage:F2} V";
@@ -245,6 +258,7 @@ namespace ABS_Tester.Forms
         {
             if (!CheckConnection()) return;
 
+            _logger?.LogStep("Read Wheel Speed Sensor");
             AddLog("휠 속도 읽기...");
             var wss = _protocol.ReadWheelSpeed();
             lblWssFL.Text = $"{wss.FrontLeft:F1} km/h";
@@ -257,6 +271,7 @@ namespace ABS_Tester.Forms
         {
             if (!CheckConnection()) return;
 
+            _logger?.LogStep("Read Steering Angle");
             AddLog("조향각 읽기...");
             double angle = _protocol.ReadSteeringAngle();
             lblSteeringAngle.Text = $"조향각: {angle:F1} °";
@@ -267,6 +282,7 @@ namespace ABS_Tester.Forms
         private void btnLampRed_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Lamp Test: EBS RED");
             AddLog("EBS RED 램프 테스트...");
             if (_protocol.ActuatorEbsRed())
                 AddLog("EBS RED 램프 ON");
@@ -277,6 +293,7 @@ namespace ABS_Tester.Forms
         private void btnLampAmber_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Lamp Test: EBS AMBER");
             AddLog("EBS AMBER 램프 테스트...");
             if (_protocol.ActuatorEbsAmber())
                 AddLog("EBS AMBER 램프 ON");
@@ -287,6 +304,7 @@ namespace ABS_Tester.Forms
         private void btnLampVdc_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Lamp Test: VDC");
             AddLog("VDC 램프 테스트...");
             if (_protocol.ActuatorVdc())
                 AddLog("VDC 램프 ON");
@@ -297,6 +315,7 @@ namespace ABS_Tester.Forms
         private void btnLampVdcFully_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Lamp Test: VDC FULLY");
             AddLog("VDC FULLY 램프 테스트...");
             if (_protocol.ActuatorVdcFully())
                 AddLog("VDC FULLY 램프 ON");
@@ -307,6 +326,7 @@ namespace ABS_Tester.Forms
         private void btnLampHillHolder_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Lamp Test: HILLHOLDER");
             AddLog("HILLHOLDER 램프 테스트...");
             if (_protocol.ActuatorHillHolder())
                 AddLog("HILLHOLDER 램프 ON");
@@ -317,6 +337,7 @@ namespace ABS_Tester.Forms
         private void btnLampStop_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Lamp Test: STOP");
             AddLog("램프 테스트 정지...");
             if (_protocol.ActuatorStop())
                 AddLog("램프 테스트 정지");
@@ -329,6 +350,8 @@ namespace ABS_Tester.Forms
         {
             if (!CheckConnection()) return;
             int wheel = cboValveWheel.SelectedIndex;
+            string[] wheelNames = { "FL", "FR", "RL", "RR" };
+            _logger?.LogStep($"Valve Test: Increase ({wheelNames[wheel]})");
             AddLog($"밸브 증압 테스트 (Wheel {wheel})...");
             if (_protocol.ValveIncrease(wheel))
                 AddLog("밸브 증압 명령 전송 완료");
@@ -340,6 +363,8 @@ namespace ABS_Tester.Forms
         {
             if (!CheckConnection()) return;
             int wheel = cboValveWheel.SelectedIndex;
+            string[] wheelNames = { "FL", "FR", "RL", "RR" };
+            _logger?.LogStep($"Valve Test: Decrease ({wheelNames[wheel]})");
             AddLog($"밸브 감압 테스트 (Wheel {wheel})...");
             if (_protocol.ValveDecrease(wheel))
                 AddLog("밸브 감압 명령 전송 완료");
@@ -350,6 +375,7 @@ namespace ABS_Tester.Forms
         private void btnValveStop_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Valve Test: STOP");
             AddLog("밸브 테스트 정지...");
             if (_protocol.ValveStop())
                 AddLog("밸브 테스트 정지");
@@ -364,11 +390,15 @@ namespace ABS_Tester.Forms
             if (MessageBox.Show("SAS 설정을 수행하시겠습니까?\n차량이 직진 상태인지 확인하세요.",
                 "확인", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                _logger?.LogStep("SAS (Steering Angle Sensor) Setting");
                 AddLog("SAS 설정 수행 중...");
                 if (_protocol.PerformSasSetting())
                     AddLog("SAS 설정 완료");
                 else
+                {
+                    _logger?.LogError("SAS Setting Failed");
                     AddLog("SAS 설정 실패");
+                }
             }
         }
 
@@ -376,6 +406,7 @@ namespace ABS_Tester.Forms
         private void btnAirGapInitFront_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Air Gap Init (Front)");
             AddLog("Air Gap 초기화 (Front)...");
             if (_protocol.InitializeAirGap(0))
                 AddLog("Air Gap 초기화 (Front) 완료");
@@ -386,6 +417,7 @@ namespace ABS_Tester.Forms
         private void btnAirGapInitRear_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Air Gap Init (Rear)");
             AddLog("Air Gap 초기화 (Rear)...");
             if (_protocol.InitializeAirGap(1))
                 AddLog("Air Gap 초기화 (Rear) 완료");
@@ -396,6 +428,7 @@ namespace ABS_Tester.Forms
         private void btnAirGapRead_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Read Air Gap");
             AddLog("Air Gap 읽기...");
             var airGap = _protocol.ReadAirGap();
             lblAirGapFL.Text = $"FL: {airGap.FrontLeft:F2}";
@@ -409,6 +442,7 @@ namespace ABS_Tester.Forms
         private void btnReadLws_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Read LWS Value");
             AddLog("LWS 값 읽기...");
             var lws = _protocol.ReadLwsValue();
             AddLog($"LWS Raw: {lws.RawData}");
@@ -417,6 +451,7 @@ namespace ABS_Tester.Forms
         private void btnReadSwitch_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Read Switch Status");
             AddLog("Switch 상태 읽기...");
             var sw = _protocol.ReadSwitchStatus();
             AddLog($"Switch Raw: {sw.RawData}");
@@ -426,6 +461,7 @@ namespace ABS_Tester.Forms
         private void btnFbmStart_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("FBM Backup Start");
             AddLog("FBM 백업 시작...");
             if (_protocol.StartFbmBackup())
                 AddLog("FBM 백업 시작 완료");
@@ -436,6 +472,7 @@ namespace ABS_Tester.Forms
         private void btnFbmStop_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("FBM Backup Stop");
             AddLog("FBM 백업 정지...");
             if (_protocol.StopFbmBackup())
                 AddLog("FBM 백업 정지 완료");
@@ -446,6 +483,7 @@ namespace ABS_Tester.Forms
         private void btnReadFbmSignal_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Read FBM Signal");
             AddLog("FBM Signal 읽기...");
             var signal = _protocol.ReadFbmSignal();
             AddLog($"FBM Signal: V1={signal.Signal1Voltage:F3}V, V2={signal.Signal2Voltage:F3}V, SW={signal.SwitchInputs:X2}");
@@ -454,6 +492,7 @@ namespace ABS_Tester.Forms
         private void btnReadFbmForce_Click(object sender, EventArgs e)
         {
             if (!CheckConnection()) return;
+            _logger?.LogStep("Read FBM Brake Force");
             AddLog("FBM 브레이크력 읽기...");
             var fbm = _protocol.ReadFbmBrakeForce();
             lblFbmFL.Text = $"FL: {fbm.FrontLeft:F2}";
@@ -765,7 +804,8 @@ namespace ABS_Tester.Forms
             {
                 if (!_logger.IsLogging)
                 {
-                    _logger.StartLogging();
+                    // 패턴 기반 세션 시작 (앱 시작 시 전체 세션)
+                    _logger.StartSession("ABS_EBS_Test", EcuType.EBS);
                     lblLogFile.Text = Path.GetFileName(_logger.LogFilePath);
                     lblLogFile.ForeColor = Color.Blue;
                     AddLog($"로그 파일 저장 시작: {_logger.LogFilePath}");
@@ -777,10 +817,12 @@ namespace ABS_Tester.Forms
             }
         }
 
-        private void StopFileLogging()
+        private void StopFileLogging(bool success = true, string errorMessage = "")
         {
             if (_logger != null && _logger.IsLogging)
             {
+                // 패턴 기반 세션 종료
+                _logger.EndSession(success, errorMessage);
                 _logger.StopLogging();
                 AddLog("로그 파일 저장 완료");
                 lblLogFile.Text = "ECU 연결 시 로그 자동 저장";

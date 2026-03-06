@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using ABS_Tester.Utils;
 
 namespace ABS_Tester.Communication
 {
@@ -112,6 +113,11 @@ namespace ABS_Tester.Communication
         public uint RxId { get; set; } = 0x18DAF10B;
         public byte[] LastReceivedData { get; private set; }
         public bool LastCommandSuccess { get; private set; }
+
+        /// <summary>
+        /// TX/RX 로깅용 Logger (외부에서 주입)
+        /// </summary>
+        public Logger Logger { get; set; }
 
         #endregion
 
@@ -315,6 +321,9 @@ namespace ABS_Tester.Communication
                             return false;
                         }
                         Log($"TX: {BytesToHex(data)}");
+
+                        // TX 로깅 (패턴 기반)
+                        Logger?.LogTx(TxId, data);
                     }
                     finally
                     {
@@ -332,6 +341,7 @@ namespace ABS_Tester.Communication
                         if ((DateTime.Now - startTime).TotalMilliseconds > timeoutMs)
                         {
                             Log("Response Timeout!");
+                            Logger?.LogError("Timeout waiting for response");
                             _waitingForResponse = false;
                             return false;
                         }
@@ -473,6 +483,10 @@ namespace ABS_Tester.Communication
                         }
 
                         Log($"RX: {BytesToHex(udsFrame)} -> Data: {BytesToHex(responseData)}");
+
+                        // RX 로깅 (패턴 기반)
+                        Logger?.LogRx(RxId, udsFrame);
+
                         DataReceived?.Invoke(this, new CanMessage(RxId, responseData));
                     }
                 }
