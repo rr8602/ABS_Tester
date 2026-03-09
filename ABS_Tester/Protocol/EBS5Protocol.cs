@@ -14,7 +14,7 @@ namespace ABS_Tester.Protocol
     {
         #region Fields
 
-        private readonly VrtDevice _device;
+        private readonly IcsNeoDevice _device;
         private const int DefaultTimeout = 3000;
         private const int RetryCount = 3;
 
@@ -22,13 +22,13 @@ namespace ABS_Tester.Protocol
 
         #region Constructor
 
-        public EBS5Protocol(VrtDevice device)
+        public EBS5Protocol(IcsNeoDevice device)
         {
             _device = device ?? throw new ArgumentNullException(nameof(device));
 
             // KNORR EBS5x 기본 CAN ID 설정
-            _device.TxId = 0x18DA0BF1;
-            _device.RxId = 0x18DAF10B;
+            _device.TxId = 0x18DA2AF1;
+            _device.RxId = 0x18DAF12A;
         }
 
         #endregion
@@ -67,7 +67,7 @@ namespace ABS_Tester.Protocol
             {
                 if (_device.SendData(request))
                 {
-                    // 긍정 응답 확인은 VrtDevice.LastCommandSuccess로
+                    // 긍정 응답 확인은 icsNeoClass.LastCommandSuccess로
                     if (_device.LastCommandSuccess)
                     {
                         return true;
@@ -92,11 +92,11 @@ namespace ABS_Tester.Protocol
                     continue;
 
                 var response = _device.LastReceivedData;
-                // 응답 구조: [SubFunc=03][Seed1][Seed2][Seed3][Seed4] (PCI, SID는 VrtDevice에서 제거됨)
+                // 응답 구조: [SubFunc=03][Seed1][Seed2][Seed3][Seed4] (PCI, SID는 icsNeoClass에서 제거됨)
                 if (response == null || response.Length < 5)
                     continue;
 
-                // 긍정 응답 확인은 VrtDevice.LastCommandSuccess로
+                // 긍정 응답 확인은 icsNeoClass.LastCommandSuccess로
                 if (!_device.LastCommandSuccess)
                     continue;
 
@@ -182,7 +182,7 @@ namespace ABS_Tester.Protocol
                     var response = _device.LastReceivedData;
                     if (response != null && response.Length > 2)
                     {
-                        // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 VrtDevice에서 제거됨)
+                        // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 icsNeoClass에서 제거됨)
                         // 응답 데이터를 문자열로 변환 (인덱스 2부터 시작)
                         StringBuilder sb = new StringBuilder();
                         for (int j = 2; j < response.Length && response[j] != 0xFF; j++)
@@ -230,7 +230,7 @@ namespace ABS_Tester.Protocol
             {
                 if (_device.SendData(request))
                 {
-                    // 긍정 응답 확인은 VrtDevice.LastCommandSuccess로
+                    // 긍정 응답 확인은 icsNeoClass.LastCommandSuccess로
                     if (_device.LastCommandSuccess)
                     {
                         return true;
@@ -261,7 +261,7 @@ namespace ABS_Tester.Protocol
                 var response = _device.LastReceivedData;
                 if (response != null && response.Length >= 6)
                 {
-                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 VrtDevice에서 제거됨)
+                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 icsNeoClass에서 제거됨)
                     // 응답 파싱 (1 bit = 1/1024 V)
                     int uzRaw = (response[2] << 8) | response[3];
                     int ubRaw = (response[4] << 8) | response[5];
@@ -291,7 +291,7 @@ namespace ABS_Tester.Protocol
                 var response = _device.LastReceivedData;
                 if (response != null && response.Length >= 10)
                 {
-                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 VrtDevice에서 제거됨)
+                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 icsNeoClass에서 제거됨)
                     // 응답 파싱 (1 bit = 1/512 * 3.6 km/h)
                     double factor = (1.0 / 512.0) * 3.6;
 
@@ -325,7 +325,7 @@ namespace ABS_Tester.Protocol
                 var response = _device.LastReceivedData;
                 if (response != null && response.Length >= 4)
                 {
-                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 VrtDevice에서 제거됨)
+                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 icsNeoClass에서 제거됨)
                     short raw = (short)((response[2] << 8) | response[3]);
                     return raw / 512.0;  // 1 bit = 1/512 degree
                 }
@@ -416,7 +416,7 @@ namespace ABS_Tester.Protocol
             {
                 if (_device.SendData(request))
                 {
-                    // 긍정 응답 확인은 VrtDevice.LastCommandSuccess로
+                    // 긍정 응답 확인은 icsNeoClass.LastCommandSuccess로
                     if (_device.LastCommandSuccess)
                     {
                         return true;
@@ -589,7 +589,7 @@ namespace ABS_Tester.Protocol
                     var response = _device.LastReceivedData;
                     if (response != null && response.Length >= 10)
                     {
-                        // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 VrtDevice에서 제거됨)
+                        // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 icsNeoClass에서 제거됨)
                         // 응답 파싱 (1 bit = 1/512 * 3.6 km/h)
                         double factor = (1.0 / 512.0) * 3.6;
 
@@ -636,7 +636,7 @@ namespace ABS_Tester.Protocol
                     // 원시 데이터 저장 (VB와 동일하게 전체 응답 저장)
                     lws.RawData = BitConverter.ToString(response).Replace("-", " ");
 
-                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 VrtDevice에서 제거됨)
+                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 icsNeoClass에서 제거됨)
                     // 브레이크 라이닝 잔량: X1~X10 (1 bit = 0.4%)
                     // 마모 센서 전압: X11~X20 (1 bit = 0.0196V)
                     if (response.Length >= 12)
@@ -732,7 +732,7 @@ namespace ABS_Tester.Protocol
                 var response = _device.LastReceivedData;
                 if (response != null && response.Length >= 7)
                 {
-                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 VrtDevice에서 제거됨)
+                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 icsNeoClass에서 제거됨)
                     // X1 X2: FBM signal 1 voltage (1 bit = 1/1024 V)
                     // X3 X4: FBM signal 2 voltage (1 bit = 1/1024 V)
                     // X5: switch inputs
@@ -771,7 +771,7 @@ namespace ABS_Tester.Protocol
                 var response = _device.LastReceivedData;
                 if (response != null && response.Length >= 10)
                 {
-                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 VrtDevice에서 제거됨)
+                    // 응답 구조: [DID_H][DID_L][DATA...] (PCI, SID는 icsNeoClass에서 제거됨)
                     // 응답 파싱 (1 bit = 1/1024 bar)
                     double factor = 1.0 / 1024.0;
 
@@ -842,7 +842,7 @@ namespace ABS_Tester.Protocol
             {
                 if (_device.SendData(request))
                 {
-                    // 긍정 응답 확인은 VrtDevice.LastCommandSuccess로
+                    // 긍정 응답 확인은 icsNeoClass.LastCommandSuccess로
                     if (_device.LastCommandSuccess)
                     {
                         return true;

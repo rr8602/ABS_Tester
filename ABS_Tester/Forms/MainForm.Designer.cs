@@ -18,6 +18,7 @@ namespace ABS_Tester.Forms
         private void InitializeComponent()
         {
             this.grpConnection = new System.Windows.Forms.GroupBox();
+            this.btnTestDiagSession = new System.Windows.Forms.Button();
             this.chkRealtime = new System.Windows.Forms.CheckBox();
             this.chkTerminalResistor = new System.Windows.Forms.CheckBox();
             this.btnEcuConnect = new System.Windows.Forms.Button();
@@ -100,9 +101,10 @@ namespace ABS_Tester.Forms
             this.grpAutoTest.SuspendLayout();
             this.grpLog.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // grpConnection
-            // 
+            //
+            this.grpConnection.Controls.Add(this.btnTestDiagSession);
             this.grpConnection.Controls.Add(this.chkRealtime);
             this.grpConnection.Controls.Add(this.chkTerminalResistor);
             this.grpConnection.Controls.Add(this.btnEcuConnect);
@@ -113,6 +115,18 @@ namespace ABS_Tester.Forms
             this.grpConnection.TabIndex = 0;
             this.grpConnection.TabStop = false;
             this.grpConnection.Text = "1. 연결";
+            //
+            // btnTestDiagSession
+            //
+            this.btnTestDiagSession.BackColor = System.Drawing.Color.LightYellow;
+            this.btnTestDiagSession.Font = new System.Drawing.Font("맑은 고딕", 8F);
+            this.btnTestDiagSession.Location = new System.Drawing.Point(15, 30);
+            this.btnTestDiagSession.Name = "btnTestDiagSession";
+            this.btnTestDiagSession.Size = new System.Drawing.Size(100, 35);
+            this.btnTestDiagSession.TabIndex = 4;
+            this.btnTestDiagSession.Text = "DiagSession\r\n테스트";
+            this.btnTestDiagSession.UseVisualStyleBackColor = false;
+            this.btnTestDiagSession.Click += new System.EventHandler(this.btnTestDiagSession_Click);
             // 
             // chkRealtime
             // 
@@ -155,7 +169,7 @@ namespace ABS_Tester.Forms
             this.btnUsbConnect.TabIndex = 0;
             this.btnUsbConnect.Text = "USB 연결";
             this.btnUsbConnect.UseVisualStyleBackColor = true;
-            this.btnUsbConnect.Click += new System.EventHandler(this.btnUsbConnect_Click);
+            this.btnUsbConnect.Visible = false; // ICS는 USB 연결 단계 불필요
             // 
             // grpEcuInfo
             // 
@@ -793,21 +807,21 @@ namespace ABS_Tester.Forms
             this.btnAutoTest.Text = "자동 테스트\r\n시작";
             this.btnAutoTest.UseVisualStyleBackColor = false;
             this.btnAutoTest.Click += new System.EventHandler(this.btnAutoTest_Click);
-            // 
+            //
             // grpLog
-            // 
+            //
             this.grpLog.Controls.Add(this.btnOpenLogFolder);
             this.grpLog.Controls.Add(this.btnClearLog);
             this.grpLog.Controls.Add(this.lstLog);
             this.grpLog.Location = new System.Drawing.Point(12, 400);
             this.grpLog.Name = "grpLog";
-            this.grpLog.Size = new System.Drawing.Size(1170, 340);
+            this.grpLog.Size = new System.Drawing.Size(1170, 480);
             this.grpLog.TabIndex = 8;
             this.grpLog.TabStop = false;
             this.grpLog.Text = "통신 로그";
-            // 
+            //
             // btnOpenLogFolder
-            // 
+            //
             this.btnOpenLogFolder.Location = new System.Drawing.Point(1085, 85);
             this.btnOpenLogFolder.Name = "btnOpenLogFolder";
             this.btnOpenLogFolder.Size = new System.Drawing.Size(70, 50);
@@ -815,9 +829,9 @@ namespace ABS_Tester.Forms
             this.btnOpenLogFolder.Text = "로그\r\n폴더";
             this.btnOpenLogFolder.UseVisualStyleBackColor = true;
             this.btnOpenLogFolder.Click += new System.EventHandler(this.btnOpenLogFolder_Click);
-            // 
+            //
             // btnClearLog
-            // 
+            //
             this.btnClearLog.Location = new System.Drawing.Point(1085, 25);
             this.btnClearLog.Name = "btnClearLog";
             this.btnClearLog.Size = new System.Drawing.Size(70, 50);
@@ -825,23 +839,23 @@ namespace ABS_Tester.Forms
             this.btnClearLog.Text = "로그\r\n지우기";
             this.btnClearLog.UseVisualStyleBackColor = true;
             this.btnClearLog.Click += new System.EventHandler(this.btnClearLog_Click);
-            // 
+            //
             // lstLog
-            // 
+            //
             this.lstLog.Font = new System.Drawing.Font("Consolas", 9F);
             this.lstLog.FormattingEnabled = true;
             this.lstLog.HorizontalScrollbar = true;
             this.lstLog.ItemHeight = 14;
             this.lstLog.Location = new System.Drawing.Point(15, 25);
             this.lstLog.Name = "lstLog";
-            this.lstLog.Size = new System.Drawing.Size(1060, 298);
+            this.lstLog.Size = new System.Drawing.Size(1060, 438);
             this.lstLog.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 750);
+            this.ClientSize = new System.Drawing.Size(1200, 900);
             this.Controls.Add(this.grpLog);
             this.Controls.Add(this.grpAutoTest);
             this.Controls.Add(this.grpLwsFbm);
@@ -881,6 +895,7 @@ namespace ABS_Tester.Forms
         private System.Windows.Forms.GroupBox grpConnection;
         private System.Windows.Forms.Button btnUsbConnect;
         private System.Windows.Forms.Button btnEcuConnect;
+        private System.Windows.Forms.Button btnTestDiagSession;
         private System.Windows.Forms.CheckBox chkTerminalResistor;
         private System.Windows.Forms.CheckBox chkRealtime;
         private System.Windows.Forms.GroupBox grpEcuInfo;

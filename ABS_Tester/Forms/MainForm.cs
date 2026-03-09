@@ -16,7 +16,7 @@ namespace ABS_Tester.Forms
     {
         #region Fields
 
-        private VrtDevice _vrtDevice;
+        private IcsNeoDevice _neoDevice;
         private EBS5Protocol _protocol;
         private System.Windows.Forms.Timer _keepAliveTimer;
         private System.Windows.Forms.Timer _monitorTimer;
@@ -41,14 +41,14 @@ namespace ABS_Tester.Forms
 
         private void InitializeDevice()
         {
-            _vrtDevice = new VrtDevice();
-            _vrtDevice.LogMessage += OnLogMessage;
-            _vrtDevice.DataReceived += OnDataReceived;
-            _protocol = new EBS5Protocol(_vrtDevice);
+            _neoDevice = new IcsNeoDevice();
+            _neoDevice.LogMessage += OnLogMessage;
+            _neoDevice.DataReceived += OnDataReceived;
+            _protocol = new EBS5Protocol(_neoDevice);
             _logger = Logger.Instance;
 
-            // Logger를 VrtDevice에 연동 (TX/RX 자동 로깅)
-            _vrtDevice.Logger = _logger;
+            // Logger를 neoDevice에 연동 (TX/RX 자동 로깅)
+            _neoDevice.Logger = _logger;
         }
 
         private void InitializeTimers()
@@ -87,7 +87,7 @@ namespace ABS_Tester.Forms
 
         private void KeepAliveTimer_Tick(object sender, EventArgs e)
         {
-            if (_vrtDevice.IsEcuConnected)
+            if (_neoDevice.IsEcuConnected)
             {
                 _protocol.SendTesterPresent();
             }
@@ -95,7 +95,7 @@ namespace ABS_Tester.Forms
 
         private void MonitorTimer_Tick(object sender, EventArgs e)
         {
-            if (_vrtDevice.IsEcuConnected && chkRealtime.Checked)
+            if (_neoDevice.IsEcuConnected && chkRealtime.Checked)
             {
                 UpdateRealtimeData();
             }
@@ -105,53 +105,48 @@ namespace ABS_Tester.Forms
 
         #region UI Event Handlers
 
-        private void btnUsbConnect_Click(object sender, EventArgs e)
+        private void btnTestDiagSession_Click(object sender, EventArgs e)
         {
-            if (!_vrtDevice.IsOpen)
+            // DiagnosticSession만 테스트하는 버튼
+            if (!_neoDevice.IsOpen)
             {
-                if (_vrtDevice.Open())
+                AddLog("neoVI 장치 연결 중...");
+                if (!_neoDevice.Open(500000))
                 {
-                    btnUsbConnect.Text = "USB 해제";
-                    btnUsbConnect.BackColor = Color.LightGreen;
-                    AddLog("VRT USB 연결 성공");
+                    AddLog("neoVI 장치 연결 실패");
+                    MessageBox.Show("neoVI 장치를 연결할 수 없습니다.", "연결 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
-                else
-                {
-                    AddLog("VRT USB 연결 실패");
-                    MessageBox.Show("VRT 장치를 연결할 수 없습니다.\nUSB 연결 상태를 확인하세요.",
-                        "연결 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                AddLog($"neoVI 장치 연결 성공: {_neoDevice.DeviceInfo}");
+            }
+
+            AddLog("StartDiagnosticSession 테스트...");
+            bool result = _protocol.StartDiagnosticSession();
+
+            if (result)
+            {
+                AddLog("StartDiagnosticSession 성공");
+                btnTestDiagSession.BackColor = Color.LightGreen;
             }
             else
             {
-                _vrtDevice.Close();
-                btnUsbConnect.Text = "USB 연결";
-                btnUsbConnect.BackColor = SystemColors.Control;
-                btnEcuConnect.Text = "ECU 연결";
-                btnEcuConnect.BackColor = SystemColors.Control;
-                _keepAliveTimer.Stop();
-                AddLog("VRT USB 연결 해제");
+                AddLog("StartDiagnosticSession 실패");
+                btnTestDiagSession.BackColor = Color.LightCoral;
             }
         }
 
         private void btnEcuConnect_Click(object sender, EventArgs e)
         {
-            if (!_vrtDevice.IsOpen)
+            if (!_neoDevice.IsOpen)
             {
-                MessageBox.Show("먼저 USB를 연결하세요.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+                // neoVI 장치 열기 + CAN 통신 초기화 (ICS는 한 번에 처리)
+                AddLog("neoVI 장치 연결 중...");
 
-            if (!_vrtDevice.IsEcuConnected)
-            {
-                AddLog("CAN 통신 초기화 중...");
-
-                // CAN 통신 시작
-                bool useTerminalResistor = chkTerminalResistor.Checked;
-                if (!_vrtDevice.StartCanCommunication(VrtDevice.BaudRate.Baud500K, useTerminalResistor))
+                if (!_neoDevice.Open(500000))
                 {
-                    AddLog("CAN 통신 초기화 실패");
-                    MessageBox.Show("CAN 통신 초기화에 실패했습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    AddLog("neoVI 장치 연결 실패");
+                    MessageBox.Show("neoVI 장치를 연결할 수 없습니다.\nUSB 연결 상태를 확인하세요.",
+                        "연결 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -180,13 +175,15 @@ namespace ABS_Tester.Forms
                     AddLog("ECU 연결 실패 - Security Access 오류");
                     MessageBox.Show("ECU 연결에 실패했습니다.\nSecurity Access 오류", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     StopFileLogging(false, "ECU Connection Failed");
+                    _neoDevice.Close();
                 }
             }
             else
             {
                 _keepAliveTimer.Stop();
                 _monitorTimer.Stop();
-                _vrtDevice.IsEcuConnected = false;
+                _neoDevice.IsEcuConnected = false;
+                _neoDevice.Close();
                 btnEcuConnect.Text = "ECU 연결";
                 btnEcuConnect.BackColor = SystemColors.Control;
                 AddLog("ECU 연결 해제");
@@ -212,8 +209,8 @@ namespace ABS_Tester.Forms
             var dtc = _protocol.ReadDtc();
             if (dtc != null)
             {
-                txtDtc.Text = VrtDevice.BytesToHex(dtc);
-                AddLog($"DTC: {VrtDevice.BytesToHex(dtc)}");
+                txtDtc.Text = IcsNeoDevice.BytesToHex(dtc);
+                AddLog($"DTC: {IcsNeoDevice.BytesToHex(dtc)}");
             }
             else
             {
@@ -635,7 +632,7 @@ namespace ABS_Tester.Forms
             AddLog("[4/10] DTC 읽기");
             var dtc = _protocol.ReadDtc();
             bool dtcOk = dtc != null;
-            string dtcStr = dtcOk ? VrtDevice.BytesToHex(dtc) : "읽기 실패";
+            string dtcStr = dtcOk ? IcsNeoDevice.BytesToHex(dtc) : "읽기 실패";
             LogResult("DTC 읽기", dtcOk, dtcStr);
             if (dtcOk)
             {
@@ -740,7 +737,7 @@ namespace ABS_Tester.Forms
 
         private void chkRealtime_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkRealtime.Checked && _vrtDevice.IsEcuConnected)
+            if (chkRealtime.Checked && _neoDevice.IsEcuConnected)
             {
                 _monitorTimer.Start();
                 AddLog("실시간 모니터링 시작");
@@ -759,14 +756,9 @@ namespace ABS_Tester.Forms
 
         private bool CheckConnection()
         {
-            if (!_vrtDevice.IsOpen)
+            if (!_neoDevice.IsOpen || !_neoDevice.IsEcuConnected)
             {
-                MessageBox.Show("USB가 연결되지 않았습니다.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (!_vrtDevice.IsEcuConnected)
-            {
-                MessageBox.Show("ECU가 연결되지 않았습니다.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("ECU가 연결되지 않았습니다.\n먼저 ECU 연결 버튼을 클릭하세요.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
             return true;
@@ -867,7 +859,7 @@ namespace ABS_Tester.Forms
             _keepAliveTimer?.Stop();
             _monitorTimer?.Stop();
             _logger?.Dispose();
-            _vrtDevice?.Dispose();
+            _neoDevice?.Dispose();
         }
 
         #endregion

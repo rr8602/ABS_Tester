@@ -26,7 +26,7 @@ namespace ABS_Tester.Communication
 
         public string ToHexString()
         {
-            return VrtDevice.BytesToHex(Data);
+            return IcsNeoDevice.BytesToHex(Data);
         }
 
         public override string ToString()
