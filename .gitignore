@@ -16,4 +16,13 @@ packages/
 # OS
 Thumbs.db
 Desktop.ini
+
+# Windows reserved names (cannot be created/deleted normally)
 nul
+NUL
+con
+CON
+aux
+AUX
+prn
+PRN
