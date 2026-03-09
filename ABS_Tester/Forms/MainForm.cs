@@ -855,11 +855,44 @@ namespace ABS_Tester.Forms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _autoTestCts?.Cancel();
-            _keepAliveTimer?.Stop();
-            _monitorTimer?.Stop();
-            _logger?.Dispose();
-            _neoDevice?.Dispose();
+            try
+            {
+                // 자동 테스트 취소
+                _autoTestCts?.Cancel();
+
+                // 타이머 정지 및 해제
+                if (_keepAliveTimer != null)
+                {
+                    _keepAliveTimer.Stop();
+                    _keepAliveTimer.Dispose();
+                    _keepAliveTimer = null;
+                }
+
+                if (_monitorTimer != null)
+                {
+                    _monitorTimer.Stop();
+                    _monitorTimer.Dispose();
+                    _monitorTimer = null;
+                }
+
+                // 타이머 이벤트 완료 대기
+                System.Threading.Thread.Sleep(100);
+
+                // 장치 닫기
+                if (_neoDevice != null)
+                {
+                    _neoDevice.Close();
+                    _neoDevice.Dispose();
+                    _neoDevice = null;
+                }
+
+                // 로거 종료
+                _logger?.Dispose();
+            }
+            catch
+            {
+                // 종료 시 예외 무시
+            }
         }
 
         #endregion
